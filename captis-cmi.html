@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Captis - Pesquisa com Consumidores Verificados</title>
+  <meta name="description" content="Pesquisas de opinião com consumidores verificados por comportamento real de compra. Painel de consumidores com verificação por nota fiscal.">
+  <meta name="robots" content="index,follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/captis.css">
+  <style>
+    /* ── Paleta Varejo 360 ── */
+    :root {
+      --color-primary:   #0075B3;   /* azul V360 */
+      --color-accent:    #F29200;   /* laranja V360 */
+      --color-green:     #13A538;   /* verde V360 */
+      --color-primary-dark: #005a8a;
+      --color-bg:        #f4f8fb;
+      --color-text:      #1a2533;
+      --color-muted:     #5a6e80;
+      --color-border:    #d6e4ef;
+    }
+
+    /* Botões */
+    .btn-primary {
+      background: var(--color-primary) !important;
+      border-color: var(--color-primary) !important;
+    }
+    .btn-primary:hover {
+      background: var(--color-primary-dark) !important;
+      border-color: var(--color-primary-dark) !important;
+    }
+    .btn-submit {
+      background: var(--color-primary) !important;
+    }
+    .btn-submit:hover {
+      background: var(--color-primary-dark) !important;
+    }
+
+    /* Topbar / header */
+    .topbar {
+      background: #fff !important;
+      border-bottom: none !important;
+      box-shadow: 0 1px 12px rgba(0,0,0,.06) !important;
+      padding: 0 !important;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar .topbar-grid {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      min-height: 64px;
+    }
+    .topbar .brand img {
+      height: 36px !important;
+      width: auto !important;
+    }
+    .topbar .top-nav {
+      display: flex !important;
+      gap: 8px !important;
+      list-style: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .topbar .top-nav a {
+      font-size: .85rem !important;
+      font-weight: 500 !important;
+      color: var(--color-text) !important;
+      text-decoration: none !important;
+      padding: 8px 14px !important;
+      border-radius: 6px !important;
+      transition: background .15s, color .15s !important;
+    }
+    .topbar .top-nav a:hover {
+      background: var(--color-bg) !important;
+      color: var(--color-primary) !important;
+    }
+    .topbar .btn-primary {
+      font-size: .85rem !important;
+      padding: 10px 20px !important;
+      border-radius: 8px !important;
+      font-weight: 600 !important;
+      white-space: nowrap !important;
+    }
+
+    /* Kickers e destaques de acento */
+    .section-kicker, .eyebrow {
+      color: var(--color-accent) !important;
+    }
+
+    /* Step numbers e ícones primários */
+    .step { color: var(--color-accent) !important; }
+
+    /* Logo grande no hero */
+    .hero-logo {
+      height: 120px;
+      width: auto;
+      display: block;
+      margin-bottom: 28px;
+    }
+
+    /* ── Overrides e extensões para a LP CMI ── */
+
+    /* Hero two-column: copy + form */
+    .hero-cmi {
+      background: #fff;
+      padding: 80px 0 0;
+    }
+    .hero-cmi .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 56px;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .hero-cmi .hero-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Hero description maior */
+    .hero-description {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #475569;
+      margin: 0 0 24px;
+    }
+
+    /* Highlights strip */
+    .highlights-section {
+      background: var(--color-primary);
+      padding: 64px 0;
+      margin-top: 0;
+    }
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    @media (max-width: 768px) {
+      .highlights-grid { grid-template-columns: 1fr; gap: 2px; }
+      .highlights-section { padding: 64px 0; }
+    }
+    .highlight-item {
+      padding: 40px 36px;
+      position: relative;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-right: 1px solid rgba(255,255,255,.12);
+    }
+    .highlight-item:last-child { border-right: none; }
+    .highlight-item::before { display: none; }
+    .highlight-num {
+      font-size: 5rem;
+      line-height: 1;
+      color: #fff;
+      opacity: .06;
+      position: absolute;
+      bottom: 8px;
+      right: 20px;
+      pointer-events: none;
+      user-select: none;
+    }
+    .highlight-item strong {
+      display: block;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .highlight-item p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,.72);
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    /* Destaque laranja inline */
+    .hl-accent {
+      font-style: normal;
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    /* Sublinhado decorativo */
+    .text-underline-accent {
+      text-decoration: underline;
+      text-decoration-color: var(--color-accent);
+      text-decoration-thickness: 3px;
+      text-underline-offset: 4px;
+    }
+    .hero-highlight {
+      font-weight: 800;
+      color: #F29200;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 58%, rgba(0,0,0,.14) 58%);
+      border-radius: 2px;
+      padding: 0 2px;
+      white-space: nowrap;
+    }
+
+    /* Texto rotativo no H1 — efeito máscara (slot machine) */
+    .hero-rotating-wrap {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+      line-height: 1.15;
+      height: 1.15em;
+    }
+    .hero-rotating {
+      display: inline-block;
+      color: var(--color-primary);
+      animation: slideMask 3s cubic-bezier(.4,0,.2,1) infinite;
+    }
+    @keyframes slideMask {
+      0%   { transform: translateY(110%); }
+      12%  { transform: translateY(0);    }
+      78%  { transform: translateY(0);    }
+      90%  { transform: translateY(-110%); }
+      100% { transform: translateY(-110%); }
+    }
+
+    /* Form card inline no hero */
+    .hero-form-card {
+      background: var(--color-bg);
+      border: none;
+      border-radius: 16px;
+      padding: 36px 32px;
+      box-shadow: none;
+      position: relative;
+    }
+    .hero-form-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 4px;
+      border-radius: 16px 16px 0 0;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    }
+    .hero-form-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--color-text, #1a202c);
+    }
+
+    /* Seção: portfólio de pesquisas */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+    }
+    @media (max-width: 900px) {
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .portfolio-grid { grid-template-columns: 1fr; }
+    }
+    .portfolio-item {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px 22px 24px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .portfolio-item:hover {
+      box-shadow: 0 8px 28px rgba(0,117,179,.10);
+      transform: translateY(-3px);
+    }
+    .portfolio-item .item-icon-wrap {
+      width: 44px; height: 44px;
+      background: #e8f4fc;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+      flex-shrink: 0;
+    }
+    .portfolio-item i {
+      font-size: 1.2rem;
+      color: var(--color-primary);
+    }
+    .portfolio-item h4 { font-size: .95rem; font-weight: 700; margin: 0 0 6px; color: var(--color-text); }
+    .portfolio-item p  { font-size: .83rem; color: #64748b; margin: 0; line-height: 1.5; }
+    /* Selo verificado */
+    .verified-seal {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--color-green);
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: 4px 12px 4px 8px;
+      border-radius: 999px;
+      vertical-align: middle;
+      margin-left: 12px;
+      line-height: 1;
+    }
+    .verified-seal svg { width: 16px; height: 16px; }
+    /* Seção: consumidor verificado */
+    .verified-concept-wrap {
+      margin-top: 0;
+      display: flex;
+      justify-content: center;
+    }
+    #consumidor-verificado {
+      padding-top: 6px;
+    }
+    .verified-concept-card {
+      position: relative;
+      background: linear-gradient(135deg, #0a4d74 0%, #0075b3 52%, #1393d1 100%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 34px 34px 30px;
+      max-width: none;
+      width: 100%;
+      box-shadow: 0 16px 40px rgba(0, 57, 92, 0.25);
+      overflow: hidden;
+    }
+    .verified-concept-card::before {
+      content: "";
+      position: absolute;
+      top: -110px;
+      right: -90px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 70%);
+    }
+    .verified-concept-card::after {
+      content: "";
+      position: absolute;
+      bottom: -80px;
+      left: -60px;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(242,146,0,.30) 0%, rgba(242,146,0,0) 72%);
+    }
+    .verified-concept-title {
+      margin: 0 0 10px;
+      color: #fff;
+      font-size: clamp(2rem, 4vw, 2.9rem);
+      line-height: 1.2;
+      position: relative;
+      z-index: 1;
+    }
+    .verified-concept-layout {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 24px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .verified-concept-card p {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.62;
+      color: rgba(255,255,255,.92);
+      max-width: none;
+      position: relative;
+      z-index: 1;
+    }
+    .verified-check-panel {
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 14px;
+      min-height: 176px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      justify-self: stretch;
+    }
+    .verified-check-ring {
+      width: 122px;
+      height: 122px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 35% 30%, #36dd80 0%, #1ecf6f 55%, #13a538 100%);
+      border: 3px solid rgba(255,255,255,.55);
+      box-shadow: 0 0 0 8px rgba(30, 207, 111, 0.25), 0 16px 30px rgba(0,0,0,.24);
+      color: #ffffff;
+      font-size: 3rem;
+    }
+    .verified-concept-card strong { color: #fff; }
+    @media (max-width: 768px) {
+      .verified-concept-layout { grid-template-columns: 1fr; }
+      .verified-concept-card {
+        padding: 28px 22px 24px;
+        border-radius: 16px;
+      }
+      .verified-concept-card p { font-size: .95rem; }
+      .verified-check-panel { min-height: 142px; }
+      .verified-check-ring {
+        width: 96px;
+        height: 96px;
+        font-size: 2.4rem;
+      }
+    }
+
+    /* Seção: evolução da pesquisa */
+    .evolution-section {
+      background: #f8fafc;
+      padding: 80px 0 28px;
+    }
+    .evolution-section .section-head {
+      max-width: 100%;
+    }
+    .evolution-pillars {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+    }
+    @media (max-width: 768px) {
+      .evolution-pillars { grid-template-columns: 1fr; }
+    }
+    .evolution-pillar {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 22px 20px;
+      box-shadow: 0 4px 18px rgba(0, 117, 179, 0.06);
+    }
+    .pillar-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      background: var(--color-primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+    .evolution-pillar h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0 0 6px;
+    }
+    .evolution-pillar p {
+      font-size: .92rem;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.55;
+    }
+    .evolution-grid {
+      display: grid;
+      grid-template-columns: 1fr 64px 1fr;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 64px;
+    }
+    @media (max-width: 768px) {
+      .evolution-grid { grid-template-columns: 1fr; gap: 24px; }
+      .evolution-arrow { transform: rotate(90deg); margin: 0 auto; }
+    }
+    .evolution-col {
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .evolution-col--old {
+      background: #fff;
+      border: 1.5px solid #e2e8f0;
+    }
+    .evolution-col--new {
+      background: #fff;
+      border: 2px solid var(--color-primary);
+      box-shadow: 0 4px 24px rgba(0,117,179,.10);
+    }
+    .evolution-col-label { margin-bottom: 20px; }
+    .evo-badge {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+    .evo-badge--old {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+    .evo-badge--new {
+      background: var(--color-primary);
+      color: #fff;
+    }
+    .evolution-quote {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: #475569;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .evolution-quote--new {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+    .quote-mark {
+      font-size: 3rem;
+      line-height: 0;
+      vertical-align: -0.5rem;
+      color: #cbd5e1;
+      margin-right: 4px;
+      font-style: normal;
+    }
+    .evolution-col--new .quote-mark { color: var(--color-primary); opacity: .3; }
+    .evolution-col-desc {
+      font-size: .88rem;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.6;
+    }
+    .evolution-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--color-accent);
+    }
+    .evolution-arrow svg { width: 40px; height: 40px; }
+    .evolution-arrow span {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+    }
+    .evolution-bottom {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .evolution-title {
+      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+      font-weight: 800;
+      color: var(--color-text);
+      margin-bottom: 24px;
+      line-height: 1.3;
+    }
+    .evolution-body {
+      font-size: 1rem;
+      color: #475569;
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+    .evolution-body:last-child { margin-bottom: 0; }
+    .evolution-body strong { color: var(--color-text); }
+
+    /* Seção: portfólio de soluções V2 */
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 1024px) {
+      .solutions-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .solutions-grid { grid-template-columns: 1fr; }
+    }
+    .solution-card {
+      display: flex;
+      gap: 16px;
+      background: #fff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 24px;
+      transition: box-shadow .18s, border-color .18s;
+    }
+    .solution-card:hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 4px 20px rgba(0,117,179,.09);
+    }
+    .solution-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--color-primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .solution-body { flex: 1; }
+    .solution-body h4 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0 0 6px;
+    }
+    .solution-desc {
+      font-size: .85rem;
+      color: #64748b;
+      margin: 0 0 14px;
+      line-height: 1.5;
+    }
+    .solution-questions {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .solution-questions li {
+      font-size: .83rem;
+      color: #475569;
+      line-height: 1.45;
+      padding-left: 14px;
+      position: relative;
+    }
+    .solution-questions li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-primary);
+      font-size: .8rem;
+    }
+
+    /* Seção: robustez do painel */
+    .panel-scale-section { background: #fff; }
+
+    .panel-stats-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--color-primary);
+      border-radius: 16px;
+      padding: 40px 48px;
+      margin: 48px 0;
+      gap: 24px;
+    }
+    @media (max-width: 768px) {
+      .panel-stats-banner { flex-direction: column; padding: 32px 24px; text-align: center; }
+      .panel-stat-divider { width: 48px; height: 1px; background: rgba(255,255,255,.25); }
+    }
+    .panel-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      text-align: center;
+    }
+    .panel-stat strong {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+    .panel-stat span {
+      font-size: .88rem;
+      color: rgba(255,255,255,.80);
+      line-height: 1.4;
+    }
+    .panel-stat-divider {
+      width: 1px;
+      height: 56px;
+      background: rgba(255,255,255,.25);
+      flex-shrink: 0;
+    }
+
+    .authority-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .authority-grid { grid-template-columns: 1fr; }
+    }
+    .authority-card {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: #f8fafc;
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .authority-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--color-primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      flex-shrink: 0;
+    }
+    .authority-card h4 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0 0 6px;
+    }
+    .authority-card p {
+      font-size: .85rem;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* Consumidores verificados conciso */
+    .cv-steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .cv-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+      max-width: 180px;
+    }
+    .cv-step-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    .cv-step p {
+      font-size: .85rem;
+      color: #475569;
+      margin: 0;
+      line-height: 1.5;
+    }
+    .cv-step-arrow {
+      color: #cbd5e1;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      .cv-step-arrow { transform: rotate(90deg); }
+    }
+
+    /* Seção: clientes / logos */
+    .clients-logo-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 32px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .client-logo-placeholder {
+      background: #f1f5f9;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      width: 140px; height: 60px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; color: #94a3b8; font-weight: 600;
+    }
+    .client-logo-item {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      width: 180px;
+      height: 60px;
+      flex: 0 0 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+    }
+    .client-logo-item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .clients-proof-text {
+      margin-top: 14px;
+      text-align: center;
+      font-size: .9rem;
+      line-height: 1.45;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    /* Seção: base estatisticamente relevante */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .stat-card strong { display: block; font-size: 2rem; font-weight: 800; color: var(--color-primary, #1f4fd6); }
+    .stat-card span   { font-size: .85rem; color: #64748b; }
+
+    /* Timeline horizontal */
+    .htimeline {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      margin-top: 48px;
+      position: relative;
+    }
+    .htimeline-step {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 0 12px;
+    }
+    .htimeline-icon {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+    /* linha conectora entre ícones */
+    .htimeline-connector {
+      position: absolute;
+      top: 28px; /* metade do ícone (56/2) */
+      left: calc(50% + 28px);
+      width: calc(100% - 28px);
+      height: 2px;
+      background: var(--color-border);
+      z-index: 1;
+    }
+    .htimeline-num {
+      font-size: .75rem;
+      font-weight: 800;
+      color: var(--color-accent);
+      margin: 12px 0 4px;
+      letter-spacing: .05em;
+    }
+    .htimeline-step h4 {
+      font-size: .9rem;
+      font-weight: 700;
+      margin: 0 0 6px;
+      color: var(--color-text);
+    }
+    .htimeline-step p {
+      font-size: .8rem;
+      color: var(--color-muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+    #como-rodamos .section-head {
+      max-width: none;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    #como-rodamos .section-head > p:not(.section-kicker) {
+      max-width: none;
+      width: 100%;
+    }
+    #como-rodamos .section-head h2 {
+      max-width: none;
+      width: 100%;
+    }
+    #pesquisas .section-head,
+    #base .section-head {
+      max-width: none;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    #pesquisas .section-head > p:not(.section-kicker) {
+      max-width: none;
+      width: 100%;
+    }
+    #base .section-head > p:not(.section-kicker) {
+      max-width: none;
+      width: 100%;
+    }
+    .process-speed-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+      background: linear-gradient(90deg, #f29200 0%, #ffb13b 100%);
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 16px 10px 12px;
+      box-shadow: 0 10px 26px rgba(242, 146, 0, 0.28);
+      position: relative;
+      overflow: hidden;
+    }
+    .process-speed-pill::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -36%;
+      width: 28%;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.35) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-22deg);
+    }
+    .process-speed-pill i {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255,255,255,.35);
+      font-size: .8rem;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .process-speed-pill .speed-copy {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+      position: relative;
+      z-index: 1;
+    }
+    .process-speed-pill .speed-copy span {
+      font-size: .66rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      opacity: .95;
+    }
+    .process-speed-pill .speed-copy strong {
+      font-size: .9rem;
+      font-weight: 800;
+    }
+    @media (max-width: 768px) {
+      .htimeline { flex-direction: column; gap: 32px; }
+      .htimeline-connector { display: none; }
+      .htimeline-step { align-items: flex-start; text-align: left; flex-direction: row; gap: 16px; }
+      .htimeline-step > div:first-child { flex-shrink: 0; }
+      .htimeline-step > div:not(.htimeline-icon) { display: none; }
+    }
+
+    /* CTA final - fundo azul escuro */
+    .cta-final-section {
+      background: var(--color-primary-dark);
+      padding: 80px 0;
+      margin: 80px 0 0;
+    }
+
+    /* Footer CMI */
+    .cmi-footer {
+      padding: 48px 0 0 !important;
+    }
+    .cmi-footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 48px;
+      align-items: center;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+    }
+    @media (max-width: 768px) {
+      .cmi-footer-grid { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+    }
+    .cmi-footer-brand img { height: 48px; width: auto; display: block; }
+    .cmi-footer-tagline {
+      font-size: .8rem;
+      margin: 10px 0 0;
+      opacity: .6;
+      font-style: italic;
+    }
+    .cmi-footer-desc p {
+      font-size: .92rem;
+      line-height: 1.7;
+      margin: 0;
+      opacity: .8;
+    }
+    .cmi-footer-address p {
+      font-size: .88rem;
+      line-height: 1.7;
+      margin: 0 0 8px;
+      opacity: .8;
+    }
+    .cmi-footer-cnpj {
+      font-size: .78rem !important;
+      opacity: .5 !important;
+    }
+    .cmi-footer .legal-note {
+      padding: 16px 0;
+      font-size: .78rem;
+      opacity: .5;
+      border-top: none;
+      margin: 0;
+    }
+
+    /* Seção: produto da Varejo 360 */
+    .v360-strip {
+      background: #f8f9fb;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-top: 40px;
+    }
+    .v360-strip img { height: 40px; flex-shrink: 0; }
+    .v360-strip p   { margin: 0; font-size: .95rem; color: #475569; }
+    @media (max-width: 600px) {
+      .v360-strip { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── MENU ── -->
+  <header class="topbar">
+    <div class="container topbar-grid">
+      <a class="brand" href="#inicio">
+        <img src="logo-captis.svg" alt="Captis por Varejo 360" style="height:40px;width:auto;">
+      </a>
+      <nav aria-label="Navegação principal">
+        <ul class="top-nav">
+          <li><a href="#consumidor-verificado">Consumidor Verificado</a></li>
+          <li><a href="#pesquisas">Pesquisas - Portfolio</a></li>
+          <li><a href="#clientes">Clientes</a></li>
+          <li><a href="#base">O Painel de Consumidores</a></li>
+          <li><a href="#como-rodamos">Como funciona</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary" href="#hero-form">Falar com a Captis</a>
+    </div>
+  </header>
+
+
+  <!-- ── HERO ── -->
+  <section class="hero hero-cmi" id="inicio">
+    <div class="container hero-grid">
+
+      <!-- Cópia -->
+      <div class="hero-copy">
+        <img src="logo-captis.svg" alt="Captis por Varejo 360" class="hero-logo">
+        <p class="eyebrow">Pesquisas de Opinião</p>
+        <h1>Pesquisas de Opinião com quem realmente consome <span class="hero-rotating-wrap"><span class="hero-rotating" aria-live="polite">a sua categoria</span></span>.</h1>
+        <p class="hero-description">
+          Faça pesquisas de produtos, embalagens, preços e campanhas direto com <span class="text-underline-accent"><strong>consumidores verificados via nota fiscal</strong></span>.
+        </p>
+      </div>
+
+      <!-- Formulário inline -->
+      <div class="hero-form-card" id="hero-form">
+        <h3>Fale com um especialista</h3>
+        <form class="lead-form" id="captis-cmi-form" action="#" method="post" aria-label="Formulário de contato CMI">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" required>
+
+          <label for="empresa">Empresa</label>
+          <input type="text" id="empresa" name="empresa" required>
+
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" required>
+
+          <label for="cargo">Cargo</label>
+          <input type="text" id="cargo" name="cargo">
+
+          <button type="submit" class="btn btn-submit">Falar com um Especialista</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+          <p class="privacy-note">Seus dados são usados apenas para contato comercial.</p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+
+  <main>
+
+    <!-- ── HIGHLIGHTS ── -->
+    <section class="highlights-section">
+      <div class="container">
+        <div class="highlights-grid">
+          <div class="highlight-item">
+            <strong>Recrutamento cirúrgico</strong>
+            <p>Por comportamento real de compra comprovado por <em class="hl-accent">cupom fiscal</em>.</p>
+            <span class="highlight-num"><i class="fas fa-crosshairs"></i></span>
+          </div>
+          <div class="highlight-item">
+            <strong>Agilidade que o mercado exige</strong>
+            <p>Pesquisas de ponta a ponta entregues em até <em class="hl-accent">20 dias corridos</em>.</p>
+            <span class="highlight-num"><i class="fas fa-bolt"></i></span>
+          </div>
+          <div class="highlight-item">
+            <strong>Plug-and-play</strong>
+            <p>Você traz o desafio, a Captis estrutura, conduz e <em class="hl-accent">entrega os resultados</em>.</p>
+            <span class="highlight-num"><i class="fas fa-plug"></i></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BLOCO EVOLUÇÃO DA PESQUISA ── -->
+    <section class="section evolution-section">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Por que o Captis</p>
+          <h2>A evolução da pesquisa: do dado declarado para o comportamento real.</h2>
+          <p>Empresas tradicionais de pesquisa formam suas amostras com uma pergunta simples de triagem: <em>"Você consumiu a marca X ou Y nos últimos 30 dias?"</em> Esse método depende da memória do respondente e abre espaço para o <strong>viés da autodeclaração</strong>.</p>
+          <p><span class="text-underline-accent"><strong>O Captis muda essa dinâmica.</strong></span> Não precisamos perguntar ao consumidor, porque já comprovamos o comportamento de compra por meio da leitura contínua de cupons fiscais.</p>
+
+          <div class="evolution-pillars">
+            <div class="evolution-pillar">
+              <div class="pillar-icon"><i class="fas fa-receipt"></i></div>
+              <div>
+                <h4>Origem via cupom fiscal</h4>
+                <p>Cada respondente é recrutado com base em compras reais registradas via nota fiscal ou QR code - não por autoclassificação.</p>
+              </div>
+            </div>
+            <div class="evolution-pillar">
+              <div class="pillar-icon"><i class="fas fa-bullseye"></i></div>
+              <div>
+                <h4>Recrutamento por comportamento</h4>
+                <p>Segmentamos por SKU, marca, canal e categoria diretamente no histórico de compra. Zero dependência de memória ou perfil declarado.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONSUMIDORES VERIFICADOS ── -->
+    <section class="section methodology" id="consumidor-verificado">
+      <div class="container">
+        <div class="verified-concept-wrap">
+          <div class="verified-concept-card">
+            <div class="verified-concept-layout">
+              <div>
+                <h3 class="verified-concept-title">Consumidor Verificado</h3>
+                <p><strong>O Consumidor Verificado tem seu hábito 100% validado por nota fiscal.</strong> Trocamos o viés do dado declarado pelo histórico real da gôndola, garantindo zero achismo e precisão absoluta para as suas decisões.</p>
+              </div>
+              <aside class="verified-check-panel" aria-label="Selo de validação">
+                <div class="verified-check-ring"><i class="fas fa-check"></i></div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PESQUISAS QUE RODAMOS ── -->
+    <section class="section" id="pesquisas">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Pesquisas de Opinião Captis</p>
+          <h2>Portfolio de Pesquisas de Opinião</h2>
+          <p>Temos uma gama completa de pesquisas de opinião para, através do consumidor verificado, entender comportamentos e tomar decisões baseadas em dados reais de compra.</p>
+        </div>
+
+        <div class="portfolio-grid">
+          <div class="portfolio-item">
+            <div class="item-icon-wrap"><i class="fas fa-lightbulb"></i></div>
+            <h4>Lançamento de Produto</h4>
+            <p>Valide com consumidores os produtos antes de lançar</p>
+          </div>
+          <div class="portfolio-item">
+            <div class="item-icon-wrap"><i class="fas fa-box"></i></div>
+            <h4>Teste de Embalagens</h4>
+            <p>Teste se atributos e embalagem convencem na hora da escolha</p>
+          </div>
+          <div class="portfolio-item">
+            <div class="item-icon-wrap"><i class="fas fa-tags"></i></div>
+            <h4>Preço &amp; Promoção</h4>
+            <p>Descubra o preço ideal e a promoção que realmente ativa a compra</p>
+          </div>
+          <div class="portfolio-item">
+            <div class="item-icon-wrap"><i class="fas fa-store"></i></div>
+            <h4>Comportamento do Consumidor</h4>
+            <p>Entenda onde seu consumidor decide comprar e por quê</p>
+          </div>
+          <div class="portfolio-item">
+            <div class="item-icon-wrap"><i class="fas fa-bullhorn"></i></div>
+            <h4>Claim, Comunicação &amp; Campanha</h4>
+            <p>Avalie se sua mensagem é clara, relevante e gera ação</p>
+          </div>
+          <div class="portfolio-item">
+            <div class="item-icon-wrap"><i class="fas fa-exchange-alt"></i></div>
+            <h4>Concorrência &amp; Migração</h4>
+            <p>Entenda por que consumidores trocam ou abandonam marcas</p>
+          </div>
+          <div class="portfolio-item">
+            <div class="item-icon-wrap"><i class="fas fa-smile"></i></div>
+            <h4>Percepção &amp; Marca</h4>
+            <p>Saiba como sua marca é percebida frente aos concorrentes</p>
+          </div>
+          <div class="portfolio-item">
+            <div class="item-icon-wrap"><i class="fas fa-users"></i></div>
+            <h4>Exploração de Segmentos / Nichos</h4>
+            <p>Conheça em profundidade quem é e como pensa seu consumidor</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ── PORTFÓLIO V2 ── (oculto por enquanto) -->
+    <section class="section solutions-section" id="solucoes" style="display: none;">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Portfólio de Soluções</p>
+          <h2>Respostas precisas para os desafios críticos da sua marca.</h2>
+          <p>Traga a sua dúvida de negócio. Nós cruzamos o comportamento real com a opinião de quem de fato passa pelo caixa para entregar insights acionáveis.</p>
+        </div>
+
+        <div class="solutions-grid">
+
+          <div class="solution-card">
+            <div class="solution-icon-wrap"><i class="fas fa-lightbulb"></i></div>
+            <div class="solution-body">
+              <h4>Lançamento de Produto</h4>
+              <p class="solution-desc">Vá além da intenção e valide ideias antes de escalar a produção.</p>
+              <ul class="solution-questions">
+                <li>Compraria este novo sabor ou formato?</li>
+                <li>Qual atributo o convence a testar?</li>
+                <li>O que precisa mudar antes de ir para a gôndola?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="solution-card">
+            <div class="solution-icon-wrap"><i class="fas fa-box"></i></div>
+            <div class="solution-body">
+              <h4>Teste de Embalagens</h4>
+              <p class="solution-desc">Descubra o que realmente converte na hora da escolha.</p>
+              <ul class="solution-questions">
+                <li>Quais atributos pesam mais na compra?</li>
+                <li>A nova embalagem comunica o benefício corretamente?</li>
+                <li>O selo de destaque funciona?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="solution-card">
+            <div class="solution-icon-wrap"><i class="fas fa-store"></i></div>
+            <div class="solution-body">
+              <h4>Comportamento do Consumidor</h4>
+              <p class="solution-desc">Aprofunde o entendimento sobre a jornada de compra no PDV físico ou digital.</p>
+              <ul class="solution-questions">
+                <li>Onde seu cliente prefere comprar (Farma, Perfumaria, Hiper) e por quê?</li>
+                <li>Como ele avalia a experiência e a exposição no ponto de venda?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="solution-card">
+            <div class="solution-icon-wrap"><i class="fas fa-exchange-alt"></i></div>
+            <div class="solution-body">
+              <h4>Concorrência &amp; Migração</h4>
+              <p class="solution-desc">Entenda a raiz da perda de market share ou a troca por produtos substitutos.</p>
+              <ul class="solution-questions">
+                <li>Por que o consumidor abandonou sua marca nos últimos meses?</li>
+                <li>O que o concorrente está entregando de melhor?</li>
+                <li>O que o faria voltar?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="solution-card">
+            <div class="solution-icon-wrap"><i class="fas fa-tags"></i></div>
+            <div class="solution-body">
+              <h4>Preço &amp; Promoção</h4>
+              <p class="solution-desc">Identifique a sensibilidade a preço e o posicionamento ideal.</p>
+              <ul class="solution-questions">
+                <li>Qual é a faixa de preço ideal percebida?</li>
+                <li>Qual formato promocional (desconto vs. cashback) realmente ativa a compra?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="solution-card">
+            <div class="solution-icon-wrap"><i class="fas fa-bullhorn"></i></div>
+            <div class="solution-body">
+              <h4>Claim, Comunicação &amp; Campanha</h4>
+              <p class="solution-desc">Meça o impacto real das suas ações de marketing com o público-alvo verificado.</p>
+              <ul class="solution-questions">
+                <li>A mensagem da nova campanha é clara e relevante?</li>
+                <li>O call-to-action é convincente?</li>
+                <li>Qual peça chamou mais atenção?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="solution-card">
+            <div class="solution-icon-wrap"><i class="fas fa-smile"></i></div>
+            <div class="solution-body">
+              <h4>Percepção &amp; Marca</h4>
+              <p class="solution-desc">Monitore a saúde da sua marca frente aos principais concorrentes.</p>
+              <ul class="solution-questions">
+                <li>Como a marca é vista no mercado?</li>
+                <li>Quais valores ela transmite hoje?</li>
+                <li>Qual o nível de lealdade e recomendação (NPS) dos seus consumidores?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="solution-card">
+            <div class="solution-icon-wrap"><i class="fas fa-users"></i></div>
+            <div class="solution-body">
+              <h4>Exploração de Segmentos / Nichos</h4>
+              <p class="solution-desc">Conheça em profundidade quem é e como pensa seu consumidor.</p>
+              <ul class="solution-questions">
+                <li>Quem são os heavy users da categoria?</li>
+                <li>O que diferencia o consumidor fiel do ocasional?</li>
+                <li>Quais segmentos têm maior potencial de crescimento?</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ── CLIENTES / LOGOS ── -->
+    <section class="section clients" id="clientes">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Clientes</p>
+          <h2>Nossos Clientes</h2>
+        </div>
+
+        <div class="clients-logo-grid">
+          <!-- Substituir pelos logos reais da Varejo 360 -->
+          <div class="client-logo-item">
+            <img src="vigor-logo.svg" alt="VIGOR">
+          </div>
+          <div class="client-logo-item">
+            <img src="msd-logo.svg" alt="MSD">
+          </div>
+          <div class="client-logo-item">
+            <img src="barry-callebaut-logo.svg" alt="Barry Callebaut">
+          </div>
+          <div class="client-logo-item">
+            <img src="royal-canin-logo.png" alt="Royal Canin">
+          </div>
+          <div class="client-logo-item">
+            <img src="camil-logo.png" alt="Camil">
+          </div>
+        </div>
+        <p class="clients-proof-text">Ajudamos +160 industrias com dados confiaveis pelo Captis e Varejo 360</p>
+      </div>
+    </section>
+
+
+    <!-- ── A ROBUSTEZ DO PAINEL ── -->
+    <section class="section panel-scale-section" id="base">
+      <div class="container">
+
+        <div class="section-head">
+          <p class="section-kicker">O Painel</p>
+          <h2>A escala e a precisão do maior painel comportamental do Brasil.</h2>
+          <p>Para garantir que a sua pesquisa tenha relevância estatística, mesmo em recortes ultraespecíficos (por região, canal ou SKU), você precisa de volume. O painel do Captis é alimentado por uma base viva, engajada e que reflete o <span class="text-underline-accent"><strong>verdadeiro perfil de consumo do país</strong></span>.</p>
+        </div>
+
+        <!-- Banner de números -->
+        <div class="panel-stats-banner">
+          <div class="panel-stat">
+            <strong>+235 mil</strong>
+            <span>consumidores verificados ativos mensalmente</span>
+          </div>
+          <div class="panel-stat-divider" aria-hidden="true"></div>
+          <div class="panel-stat">
+            <strong>+30 milhões</strong>
+            <span>compras reais processadas por ano</span>
+          </div>
+          <div class="panel-stat-divider" aria-hidden="true"></div>
+          <div class="panel-stat">
+            <strong>95%</strong>
+            <span>nível de confiança estatística nas pesquisas de opinião padrão</span>
+          </div>
+        </div>
+
+        <!-- Cards de autoridade -->
+        <div class="authority-grid">
+          <div class="authority-card">
+            <div class="authority-icon"><i class="fas fa-chart-bar"></i></div>
+            <div>
+              <h4>Representatividade Real</h4>
+              <p>Nossa amostra possui distribuição equilibrada de sexo, faixa etária e <span class="text-underline-accent"><strong>alinhamento com a PEA de todas as principais regiões do Brasil</strong></span> - auditável pelo Censo/IBGE.</p>
+            </div>
+          </div>
+          <div class="authority-card">
+            <div class="authority-icon"><i class="fas fa-crosshairs"></i></div>
+            <div>
+              <h4>Públicos de Nicho</h4>
+              <p>Quer consultar apenas <span class="text-underline-accent"><strong>mulheres de 30 a 40 anos que compraram um produto premium na perfumaria X</strong></span>? O tamanho colossal da nossa base nos permite isolar amostras granulares como essa.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ── COMO RODAMOS ── -->
+    <section class="section methodology" id="como-rodamos">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Como rodamos</p>
+          <h2>Da pergunta ao relatório em até 20 dias</h2>
+          <p>Você traz a dúvida de negócio e a Captis conduz a pesquisa de opinião de ponta a ponta, com método claro e entrega executiva para decisão rápida.</p>
+          <div class="process-speed-pill">
+            <i class="fas fa-bolt"></i>
+            <div class="speed-copy">
+              <span>Agilidade</span>
+              <strong>Processo em até 20 dias corridos</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="htimeline">
+          <article class="htimeline-step">
+            <div class="htimeline-icon"><i class="fas fa-search"></i></div>
+            <div class="htimeline-connector"></div>
+            <p class="htimeline-num">01</p>
+            <h4>Pergunta estratégica</h4>
+            <p>Você traz a pergunta que precisa responder para decidir.</p>
+          </article>
+          <article class="htimeline-step">
+            <div class="htimeline-icon"><i class="fas fa-file-lines"></i></div>
+            <div class="htimeline-connector"></div>
+            <p class="htimeline-num">02</p>
+            <h4>Desenho da pesquisa de opinião</h4>
+            <p>Definimos recorte, amostra e instrumento alinhados ao objetivo.</p>
+          </article>
+          <article class="htimeline-step">
+            <div class="htimeline-icon"><i class="fas fa-user-check"></i></div>
+            <div class="htimeline-connector"></div>
+            <p class="htimeline-num">03</p>
+            <h4>Recrutamento verificado</h4>
+            <p>Selecionamos consumidores confirmados por NF conforme o recorte.</p>
+          </article>
+          <article class="htimeline-step">
+            <div class="htimeline-icon"><i class="fas fa-check-double"></i></div>
+            <div class="htimeline-connector"></div>
+            <p class="htimeline-num">04</p>
+            <h4>Campo e validação</h4>
+            <p>Executamos coleta, validamos qualidade e consolidamos os segmentos.</p>
+          </article>
+          <article class="htimeline-step">
+            <div class="htimeline-icon"><i class="fas fa-chart-line"></i></div>
+            <p class="htimeline-num">05</p>
+            <h4>Relatório executivo</h4>
+            <p>Entregamos em slides com insights acionáveis e plano de decisão.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ── CTA FINAL ── -->
+    <section class="cta-final-section">
+      <div class="container" style="text-align:center;">
+        <p class="section-kicker" style="color:var(--color-accent);">Pronto para começar?</p>
+        <h2 style="color:#fff;margin-bottom:8px;">Fale com a Captis sobre sua próxima pesquisa de opinião</h2>
+        <p style="color:rgba(255,255,255,.75);margin-bottom:40px;max-width:520px;margin-left:auto;margin-right:auto;">Traga sua pergunta. A gente devolve recorte, metodologia e plano de execução.</p>
+        <a class="btn" href="#hero-form" style="font-size:1.1rem;padding:16px 44px;background:var(--color-accent);color:#fff;border:none;border-radius:8px;font-weight:700;">Saber mais sobre pesquisas Captis &rarr;</a>
+      </div>
+    </section>
+
+
+  </main>
+
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer cmi-footer" id="contato">
+    <div class="container">
+      <div class="cmi-footer-grid">
+
+        <div class="cmi-footer-brand">
+          <img src="logo-captis.svg" alt="Captis por Varejo 360">
+          <p class="cmi-footer-tagline">Pesquisas de opinião com consumidores verificados</p>
+        </div>
+
+        <div class="cmi-footer-desc">
+          <p>Uma empresa de Inteligência e Pesquisa de Mercado com a missão de lançar luz sobre os comportamentos e hábitos de compra dos consumidores, entregando dados reais e acionáveis para marcas e indústrias.</p>
+        </div>
+
+        <div class="cmi-footer-address">
+          <p>Avenida Orosimbo Maia, 360<br>Sala 509, Centro<br>Campinas/SP — CEP: 13010-211</p>
+          <p class="cmi-footer-cnpj">CNPJ: 26.350.495/0001-72</p>
+        </div>
+
+      </div>
+      <p class="legal-note" style="text-align:center;">Benchmkt Inteligência e Pesquisas de Mercado Ltda. &nbsp;|&nbsp; © 2026 Varejo 360 &nbsp;|&nbsp; Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    /* Texto rotativo hero */
+    (function () {
+      const words = ["a sua categoria", "a sua marca", "o seu produto"];
+      const el = document.querySelector(".hero-rotating");
+      if (!el) return;
+      let i = 0;
+      setInterval(function () {
+        el.style.animation = "none";
+        el.offsetHeight; // reflow
+        i = (i + 1) % words.length;
+        el.textContent = words[i];
+        el.style.animation = "";
+      }, 3000);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const form = document.getElementById("captis-cmi-form");
+      if (!form) return;
+      const statusEl = form.querySelector(".form-status");
+      const submitBtn = form.querySelector(".btn-submit");
+      const defaultText = submitBtn ? submitBtn.textContent : "";
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (statusEl) statusEl.textContent = "Enviando...";
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Enviando..."; }
+
+        const payload = {
+          nome:    (form.querySelector("#nome")?.value    || "").trim(),
+          empresa: (form.querySelector("#empresa")?.value || "").trim(),
+          email:   (form.querySelector("#email")?.value   || "").trim(),
+          cargo:   (form.querySelector("#cargo")?.value   || "").trim(),
+        };
+
+        try {
+          const res = await fetch("/captis-lead", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (!res.ok || !data.ok) throw new Error(data.error || "Falha");
+          if (statusEl) statusEl.textContent = "Recebemos seus dados. Nosso time entrará em contato em breve.";
+          form.reset();
+        } catch {
+          if (statusEl) statusEl.textContent = "Não foi possível enviar agora. Tente novamente.";
+        } finally {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = defaultText; }
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
